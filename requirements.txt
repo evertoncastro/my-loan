@@ -1,0 +1,10 @@
+mccabe==0.6.1
+mock==4.0.2
+pycodestyle==2.6.0
+pydocstyle==5.0.2
+pyflakes==2.2.0
+pylama==7.7.1
+python-dateutil==2.8.1
+pytz==2020.1
+six==1.15.0
+snowballstemmer==2.0.0
