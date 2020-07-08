@@ -19,5 +19,9 @@ class Customer:
         self._loan = loan
 
     @property
+    def cpf(self):
+        return self._cpf
+
+    @property
     def birthdate(self):
         return self._birthdate
