@@ -1,5 +1,3 @@
-from decimal import Decimal, ROUND_HALF_UP
-
 
 class TermTaxes:
 
@@ -7,12 +5,16 @@ class TermTaxes:
         self._6 = _6
         self._9 = _9
         self._12 = _12
+        self._order = [6, 9, 12]
 
     def get_tax_by_term(self, term: int):
         try:
             return getattr(self, f'_{term}')
         except AttributeError:
             raise Exception('Invalid term')
+
+    def get_next_term(self, term: int):
+        return next((t for t in self._order if t > term), None)
 
 
 class Range:
@@ -55,16 +57,3 @@ class ScoreTermTaxes:
                 if t.min_score <= score <= t.max_score),
             None
         )
-
-
-class TaxesCalc:
-
-    def __init__(self, term_taxes: TermTaxes):
-        self._term_taxes = term_taxes
-
-    def calc_term_value(self, current_value: float, term: int) -> float:
-        # TODO: Seria adequado utilizar uma convensao para valores monetarios
-        i = self._term_taxes.get_tax_by_term(term) / 100
-        n = term
-        final = current_value * ((((1 + i)**n) * i) / (((1 + i)**n) - 1))
-        return Decimal(final).quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)

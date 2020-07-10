@@ -1,7 +1,7 @@
 from unittest import TestCase
 from services.term_tax import ScoreTermTaxes
 from services.term_tax import TermTaxes
-from services.term_tax import TaxesCalc
+from services.loan import TermCalc
 from decimal import Decimal, ROUND_HALF_UP
 
 
@@ -17,6 +17,11 @@ class TestTermTaxes(TestCase):
         term_taxes = TermTaxes(6.4, 6.6, 6.9)
         tax = term_taxes.get_tax_by_term(12)
         self.assertEquals(tax, 6.9)
+
+    def test_if_gets_next_term_value(self):
+        term_taxes = TermTaxes(6.4, 6.6, 6.9)
+        next_term = term_taxes.get_next_term(6)
+        self.assertEquals(next_term, 9)
 
 
 class TestTaxes(TestCase):
@@ -59,10 +64,10 @@ class TestTaxes(TestCase):
         self.assertEquals(e.exception.args[0], 'Invalid score')
 
 
-class TestTaxesCalc(TestCase):
+class TestTermCalc(TestCase):
 
     def test_if_returns_the_correct_term_value_for_6_terms(self):
-        term_value = TaxesCalc(
+        term_value = TermCalc(
             TermTaxes(6.4, 6.6, 6.9)
         ).calc_term_value(2000, 6)
         self.assertEquals(
@@ -74,7 +79,7 @@ class TestTaxesCalc(TestCase):
         )
 
     def test_if_returns_the_correct_term_value_for_9_terms(self):
-        term_value = TaxesCalc(
+        term_value = TermCalc(
             TermTaxes(6.4, 6.6, 6.9)
         ).calc_term_value(2000, 9)
         self.assertEquals(
@@ -86,7 +91,7 @@ class TestTaxesCalc(TestCase):
         )
 
     def test_if_returns_the_correct_term_value_for_12_terms(self):
-        term_value = TaxesCalc(
+        term_value = TermCalc(
             TermTaxes(6.4, 6.6, 6.9)
         ).calc_term_value(2000, 12)
         self.assertEquals(
