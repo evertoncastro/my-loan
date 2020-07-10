@@ -6,6 +6,8 @@ class Config(object):
     Debug = True
     RESTPLUS_MASK_HEADER = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CELERY_BROKER_URL = 'amqp://rabbitmq:rabbitmq@0.0.0.0:5672/'
+    CELERY_RESULT_BACKEND = 'amqp://rabbitmq:rabbitmq@0.0.0.0:5672/'
 
 
 class DevelopmentConfig(Config):

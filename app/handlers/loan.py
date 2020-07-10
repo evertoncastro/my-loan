@@ -4,6 +4,7 @@ from werkzeug.exceptions import NotFound
 from util import validation
 from datetime import datetime
 from models import LoanRequestModel
+from services.process_loan import async_process_loan_registry
 
 
 class CreateLoanRequest:
@@ -21,6 +22,7 @@ class CreateLoanRequest:
             terms=data['terms'],
             income=data['income']
         )
+        async_process_loan_registry.delay(_id)
         return dict(id=_id)
 
     def validate(self, data):

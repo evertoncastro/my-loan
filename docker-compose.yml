@@ -1,0 +1,24 @@
+version: "2"
+services:
+    # app:
+    #     build: .
+    #     image: local/contestdbsetup:0.0
+    #     container_name: setup-app
+    #     ports:
+    #     - "8080:8080"
+    #     links:
+    #     - db
+    #     depends_on:
+    #     - db
+    rabbit:
+        image: rabbitmq:management
+        hostname: rabbit
+        container_name: broker
+        environment:
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=rabbitmq
+        ports:
+        - "5672:5672"
+        - "15672:15672"
+        expose:
+        - 5672

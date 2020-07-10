@@ -37,3 +37,9 @@ python tests/runner.py
 ```
 flask run
 ```
+
+
+### Start Celery Worker
+```
+celery -A app.celery worker --loglevel=info
+```
