@@ -3,9 +3,10 @@ from main import app
 from app import db
 from tests.runner import clear_database
 from models import LoanRequestModel
+from datetime import datetime
 
 
-class TestEpisodeNamespace(TestCase):
+class TestCreateLoanEndpoint(TestCase):
 
     def setUp(self):
         self.app_context = app.test_request_context()
@@ -60,3 +61,48 @@ class TestEpisodeNamespace(TestCase):
             self.session, response.json['id']
         )
         self.assertIsNotNone(loan_data)
+
+
+class TestConsultLoanEndpoint(TestCase):
+
+    def setUp(self):
+        self.app_context = app.test_request_context()
+        self.app_context.push()
+        self.client = app.test_client()
+        self.db = db
+        self.session = self.db.session
+
+        clear_database(self.db)
+
+    def tearDown(self):
+        clear_database(self.db)
+
+    def test_if_returns_404_for_not_found_model(self):
+        response = self.client.get(
+            '/loan_api/v1.0/loan/xpto'
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_if_returns_200_found_model(self):
+        LoanRequestModel().create(
+            self.session,
+            id='xpto',
+            cpf='00011122233',
+            name='Fake',
+            birthdate=datetime.strptime('1990-01-01', '%Y-%m-%d'),
+            amount=2000,
+            terms=6,
+            income=3000
+        )
+        response = self.client.get(
+            '/loan_api/v1.0/loan/xpto'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, {
+            'amount': None,
+            'id': 'xpto',
+            'refused_policy': None,
+            'result': None,
+            'status': 'processing',
+            'terms': None
+        })

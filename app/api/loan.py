@@ -4,6 +4,7 @@ from flask_restplus import Namespace, Resource, fields
 from werkzeug.exceptions import HTTPException
 from werkzeug.exceptions import InternalServerError
 from handlers.loan import CreateLoanRequest
+from handlers.loan import ConsultLoanRequest
 
 
 namespace = Namespace('loan', description='Loan')
@@ -71,7 +72,7 @@ get_loan_response = namespace.model(
             required=True,
             description='Montante liberado em caso de proposta aprovada. Caso contrário deve ser null'
         ),
-        'amount': fields.Integer(
+        'terms': fields.Integer(
             required=True,
             description='Quantidade de parcelas aprovadas na oferta. Caso a proposta tenha sido recusada, deve ser null'
         )
@@ -105,21 +106,26 @@ class CreateLoan(Resource):
             session.close()
 
 
-@namespace.route('/<int:id>', doc={"description": 'Verifica status do pedido'})
+@namespace.route('/<string:id>', doc={"description": 'Verifica status do pedido'})
 @namespace.param('id', 'Identificador do pedido')
 @namespace.expect(headers)
 class GetLoanStatus(Resource):
     @namespace.response(200, 'Success')
-    @namespace.response(404, 'Not Found Error')
+    @namespace.response(404, 'Not Found loan request')
     @namespace.response(500, 'Server Error')
     @namespace.marshal_with(get_loan_response)
     def get(self, id):
+        session = db.session
         try:
-            return {}
+            return ConsultLoanRequest().request(
+                session, {"id": id}
+            )
         except HTTPException as e:
             raise e
         except Exception as e:
             raise InternalServerError(e.args[0])
+        finally:
+            session.close()
 
 
 def bind_with_api(api: Api):

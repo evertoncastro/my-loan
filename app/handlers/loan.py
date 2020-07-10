@@ -1,5 +1,6 @@
 from uuid import uuid1
 from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import NotFound
 from util import validation
 from datetime import datetime
 from models import LoanRequestModel
@@ -37,3 +38,23 @@ class CreateLoanRequest:
             e.message = 'Invalid request'
             e.data = {'errors': errors}
             raise e
+
+
+class ConsultLoanRequest:
+
+    def request(self, session, data):
+        loan_data = LoanRequestModel().fetch(
+            session, data['id']
+        )
+        if not loan_data:
+            e = NotFound()
+            e.message = 'Not Found loan request'
+            raise e
+        return dict(
+            id=loan_data.id,
+            status=loan_data.status,
+            result=loan_data.result,
+            refused_policy=loan_data.refused_policy,
+            amount=loan_data.approved_amount,
+            terms=loan_data.approved_terms
+        )
