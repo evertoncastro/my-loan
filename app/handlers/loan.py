@@ -1,3 +1,4 @@
+from os import getenv
 from uuid import uuid1
 from werkzeug.exceptions import BadRequest
 from werkzeug.exceptions import NotFound
@@ -22,7 +23,9 @@ class CreateLoanRequest:
             terms=data['terms'],
             income=data['income']
         )
-        async_process_loan_registry.delay(_id)
+        print('Posting task')
+        if getenv('FLASK_ENV') not in ['testing']:
+            async_process_loan_registry.delay(_id)
         return dict(id=_id)
 
     def validate(self, data):

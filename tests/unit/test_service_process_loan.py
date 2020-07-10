@@ -58,7 +58,6 @@ class TestAsyncProcessLoan(TestCase):
         mock_proc_policies.return_value = customer
         processed = async_process_loan_registry('xpto')
         self.assertTrue(processed)
-        self.assertEqual(loan_registry.status, 'completed')
 
 
 class TestProcessLoanPolicies(TestCase):

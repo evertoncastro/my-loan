@@ -1,4 +1,5 @@
 import logging
+from app import app
 from json import dumps
 from abc import ABC
 from abc import abstractmethod
@@ -34,10 +35,9 @@ class AgePolicy(Policy):
 class ScorePolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
-        # TODO: trazer url ou token de um arquivo de config
-        url = 'https://challenge.noverde.name/score'
+        url = f'{app.config["LOAN_API_URL"]}/score'
         headers = {
-            'x-api-key': 'SnAB7jQEFs1Ai8XtZdssa14gORT3jWPI7TWdXN97'
+            'x-api-key': app.config["LOAN_API_TOKEN"]
         }
         data = dict(cpf=customer.cpf)
         response = post(url, data=dumps(data), headers=headers)
@@ -57,10 +57,9 @@ class ScorePolicy(Policy):
 class IncomeCommitmentPolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
-        # TODO: trazer url ou token de um arquivo de config
-        url = 'https://challenge.noverde.name/commitment'
+        url = f'{app.config["LOAN_API_URL"]}/commitment'
         headers = {
-            'x-api-key': 'SnAB7jQEFs1Ai8XtZdssa14gORT3jWPI7TWdXN97'
+            'x-api-key': app.config["LOAN_API_TOKEN"]
         }
         data = dict(cpf=customer.cpf)
         response = post(url, data=dumps(data), headers=headers)

@@ -20,7 +20,7 @@ class TermCalc:
         self._term_taxes = term_taxes
 
     def calc_term_value(self, current_value: float, term: int) -> float:
-        # TODO: Seria adequado utilizar uma convensao para valores monetarios
+        # IDEA: Seria adequado utilizar uma convensao para valores monetarios
         i = self._term_taxes.get_tax_by_term(term) / 100
         n = term
         final = current_value * ((((1 + i)**n) * i) / (((1 + i)**n) - 1))

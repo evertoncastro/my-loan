@@ -1,15 +1,26 @@
+import os
 from os import getenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from celery import Celery
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 def setup_app() -> object:
     _app = Flask(__name__)
-    _app.config.from_object(
-        f"config.{getenv('FLASK_ENV', 'development')}"
-    )
+    _app.config['DEBUG'] = True
+    _app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    _app.config['RESTPLUS_MASK_HEADER'] = False
+    _app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    _app.config['CELERY_BROKER_URL'] = 'amqp://rabbitmq:rabbitmq@rabbit:5672/'
+    _app.config['CELERY_RESULT_BACKEND'] = 'amqp://rabbitmq:rabbitmq@rabbit:5672/'
+    _app.config['CELERY_SEND_EVENTS'] = True
+    _app.config['LOAN_API_URL'] = 'https://challenge.noverde.name'
+    _app.config['LOAN_API_TOKEN'] = 'SnAB7jQEFs1Ai8XtZdssa14gORT3jWPI7TWdXN97'
+    if getenv('FLASK_ENV') in ['testing']:
+        _app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
     return _app
 
 

@@ -1,15 +1,15 @@
 version: "2"
 services:
-    # app:
-    #     build: .
-    #     image: local/contestdbsetup:0.0
-    #     container_name: setup-app
-    #     ports:
-    #     - "8080:8080"
-    #     links:
-    #     - db
-    #     depends_on:
-    #     - db
+    app:
+        build: .
+        image: test/loan:0.1
+        container_name: loan-app
+        ports:
+        - "8080:8080"
+        links:
+        - rabbit
+        depends_on:
+        - rabbit
     rabbit:
         image: rabbitmq:management
         hostname: rabbit
@@ -22,3 +22,21 @@ services:
         - "15672:15672"
         expose:
         - 5672
+    worker:
+        build: .
+        hostname: worker
+        environment:
+            - PYTHONPATH=$PYTHONPATH:/app/app
+            - FLASK_ENV=development
+            - FLASK_APP=app/main.py
+        entrypoint: celery
+        command: -A app.celery worker --loglevel=info
+        user: nobody
+        volumes:
+            - .:/app
+        links:
+            - rabbit
+            - app
+        depends_on:
+            - rabbit
+            - app
