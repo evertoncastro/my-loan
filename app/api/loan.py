@@ -1,7 +1,10 @@
+from app import db
 from flask_restplus import Api
 from flask_restplus import Namespace, Resource, fields
 from werkzeug.exceptions import HTTPException
 from werkzeug.exceptions import InternalServerError
+from handlers.loan import CreateLoanRequest
+
 
 namespace = Namespace('loan', description='Loan')
 
@@ -9,7 +12,8 @@ create_loan_request = namespace.model(
     'Dados para solicitação de empréstimo', {
         'name': fields.String(
             description='Nome do cliente',
-            required=True
+            required=True,
+            min_length=4
         ),
         'cpf': fields.String(
             required=True,
@@ -86,10 +90,19 @@ class CreateLoan(Resource):
     @namespace.expect(create_loan_request, validate=True)
     @namespace.marshal_with(create_loan_response)
     def post(self):
+        session = db.session
         try:
-            return {'id': 1}
+            response = CreateLoanRequest().request(
+                session, namespace.payload
+            )
+            session.commit()
+            return response
+        except HTTPException as e:
+            raise e
         except Exception as e:
             raise InternalServerError(e.args[0])
+        finally:
+            session.close()
 
 
 @namespace.route('/<int:id>', doc={"description": 'Verifica status do pedido'})

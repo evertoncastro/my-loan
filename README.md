@@ -21,6 +21,13 @@ export FLASK_ENV=development
 export FLASK_APP=app/main.py
 ```
 
+#### Criação de banco e tabelas
+```
+flask db init --directory=development_migrations
+flask db migrate --directory=development_migrations
+flask db upgrade --directory=development_migrations
+
+
 ### Executando os tests
 ```
 python tests/runner.py
