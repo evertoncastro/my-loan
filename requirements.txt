@@ -1,3 +1,6 @@
+Flask==1.1.2
+flask-restplus==0.13.0
+Werkzeug==0.16.1
 mccabe==0.6.1
 mock==4.0.2
 pycodestyle==2.6.0
