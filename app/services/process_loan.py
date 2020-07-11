@@ -11,18 +11,22 @@ from services.policies import IncomeCommitmentPolicy
 @celery.task()
 def async_process_loan_registry(_id: str) -> bool:
     print('Start async process')
-    session = db.session
+    print(f'ID: {_id}')
     try:
+        session = db.session
         loan_registry = LoanRequestModel().fetch(
             session, _id
         )
         if not loan_registry:
+            print('Not found loan registry')
             return False
+        print('Rigistry found')
         customer = process_loan_policies(loan_registry)
         update_loan_registry(loan_registry, customer)
         session.commit()
         return True
     except Exception as e:
+        print(f'Error: {e.args}')
         raise e
     finally:
         session.close()

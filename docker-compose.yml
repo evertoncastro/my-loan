@@ -4,12 +4,33 @@ services:
         build: .
         image: test/loan:0.1
         container_name: loan-app
+        environment:
+            - PYTHONPATH=$PYTHONPATH:/app/app
+            - FLASK_ENV=staging
+            - FLASK_APP=app/main.py
         ports:
         - "8080:8080"
         links:
         - rabbit
+        - db
         depends_on:
         - rabbit
+        - db
+        expose:
+        - 8080
+    db:
+        image: mysql:5.7
+        container_name: loan-db
+
+        ports:
+            - "33060:3306"
+        expose:
+            - 3306
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+        volumes:
+            - ./database/db_scripts:/docker-entrypoint-initdb.d/
+            - /tmp/loan_db:/var/lib/mysql
     rabbit:
         image: rabbitmq:management
         hostname: rabbit
@@ -27,16 +48,17 @@ services:
         hostname: worker
         environment:
             - PYTHONPATH=$PYTHONPATH:/app/app
-            - FLASK_ENV=development
+            - FLASK_ENV=staging
             - FLASK_APP=app/main.py
         entrypoint: celery
-        command: -A app.celery worker --loglevel=info
-        user: nobody
+        command: -A app.celery worker --loglevel=info --concurrency=2 --pool eventlet
         volumes:
-            - .:/app
+        - .:/app
         links:
-            - rabbit
-            - app
+        - rabbit
+        - app
         depends_on:
-            - rabbit
-            - app
+        - rabbit
+        - app
+        expose:
+        - 8080

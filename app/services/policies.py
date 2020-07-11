@@ -23,6 +23,7 @@ class Policy(ABC):
 class AgePolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
+        print('Start age policy')
         current_date = date.current_datetime()
         date_diff = relativedelta(current_date, customer.birthdate)
         if date_diff.years < 18:
@@ -35,6 +36,7 @@ class AgePolicy(Policy):
 class ScorePolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
+        print('Start score policy')
         url = f'{app.config["LOAN_API_URL"]}/score'
         headers = {
             'x-api-key': app.config["LOAN_API_TOKEN"]
@@ -57,6 +59,7 @@ class ScorePolicy(Policy):
 class IncomeCommitmentPolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
+        print('Start commitment policy')
         url = f'{app.config["LOAN_API_URL"]}/commitment'
         headers = {
             'x-api-key': app.config["LOAN_API_TOKEN"]

@@ -3,7 +3,7 @@ from app import db
 
 class LoanRequestModel(db.Model):
     __tablename__ = 'loan_request'
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.String(100), primary_key=True)
     cpf = db.Column(db.String(11))
     name = db.Column(db.String(50))
     birthdate = db.Column(
