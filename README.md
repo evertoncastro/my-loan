@@ -5,7 +5,7 @@ Todos os comandos abaixo devem ser executados no diretório raiz do projeto.
 ---
 ## Usando Docker
 
-Com essa estrutura os serviços abaixo ficaram disponíveis:
+Com essa estrutura os serviços abaixo ficarão disponíveis:
 - Flask Web server
 - MySQL database
 - Broker de mensagens (RabbitMQ)
@@ -16,6 +16,7 @@ Com essa estrutura os serviços abaixo ficaram disponíveis:
 docker-compose up --build
 ```
 - Acesse a documentação da API em: http://0.0.0.0:8080/loan_api/v1.0/
+- É possível ver os logs das tarefas assíncronas no terminal
 - Acesse o painel do broker de mensagens em: http://localhost:15672/
 
 ----
