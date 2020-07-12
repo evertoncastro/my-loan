@@ -5,7 +5,7 @@ api = ApiRestPlus(
     Blueprint('API de solicitação de crédito', __name__),
     title='API de crédito',
     version='1.0',
-    description='Endpoints para pedido e acompanhamento de status do crédito'
+    description='Endpoints para pedido e acompanhamento de status de crédito'
 )
 
 loan_namespace.bind_with_api(api)

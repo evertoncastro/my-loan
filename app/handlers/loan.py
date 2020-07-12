@@ -27,7 +27,9 @@ class CreateLoanRequest:
         session.commit()
         app.logger.debug('Posting task')
         if getenv('FLASK_ENV') not in ['testing']:
-            async_process_loan_registry.delay(_id)
+            print('Countdown task')
+            #async_process_loan_registry.delay(_id)
+            async_process_loan_registry.s(_id).apply_async(countdown=7)
         return dict(id=_id)
 
     def validate(self, data):
