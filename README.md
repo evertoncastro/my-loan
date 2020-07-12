@@ -85,3 +85,7 @@ python app/main.py
 ```
 celery -A app.celery worker --loglevel=info
 ```
+
+### Importante
+
+- As tarefas estão sendo executadas com um delay de 7 segundos para facilitar a visualização nos testes
