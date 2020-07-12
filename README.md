@@ -1,9 +1,23 @@
-# Meu empréstimo
+# Solicitação de Crédito
 
-Todos os comandos abaixo devem ser executados no diretório raiz do projeto.
 
+## Sobre
 ---
-## Usando Docker
+Projeto que simula uma API que recebe pedidos de crédito.
+
+## Tecnologias
+----
+- Flask
+- MySQL
+- SQLite
+- RabbitMQ
+- Celery
+
+
+## Ligando or serviços
+---
+
+## Com Docker
 
 Com essa estrutura os serviços abaixo ficarão disponíveis:
 - Flask Web server
@@ -12,12 +26,14 @@ Com essa estrutura os serviços abaixo ficarão disponíveis:
 - Celery (worker)
 
 
+No diretório raiz do projeto execute:
 ```
 docker-compose up --build
 ```
+
 - Acesse a documentação da API em: http://0.0.0.0:8080/loan_api/v1.0/
 - É possível ver os logs das tarefas assíncronas no terminal
-- Acesse o painel do broker de mensagens em: http://localhost:15672/
+- Acesse o painel do broker de mensagens em: http://0.0.0.0:15672/
 
 ----
 
@@ -57,7 +73,7 @@ export FLASK_ENV=testing
 python tests/runner.py
 ```
 
-#### Iniciando a aplicação
+#### Iniciando o serviço da API
 ```
 python app/main.py
 ```
@@ -69,4 +85,3 @@ python app/main.py
 ```
 celery -A app.celery worker --loglevel=info
 ```
-
