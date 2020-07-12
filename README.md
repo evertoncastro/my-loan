@@ -2,11 +2,11 @@
 
 
 ## Sobre
----
+
 Projeto que simula uma API que recebe pedidos de crédito.
 
 ## Tecnologias
-----
+
 - Flask
 - MySQL
 - SQLite
@@ -15,7 +15,7 @@ Projeto que simula uma API que recebe pedidos de crédito.
 
 
 ## Ligando or serviços
----
+
 
 ## Com Docker
 
