@@ -12,6 +12,7 @@ COPY app/requirements.txt /app/requirements.txt
 WORKDIR /app
 
 RUN pip install -r requirements.txt && apt-get update && apt-get install -y mariadb-client
+RUN pip install https://github.com/eventlet/eventlet/archive/master.zip
 
 COPY . /app
 

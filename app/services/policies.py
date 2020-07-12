@@ -23,7 +23,7 @@ class Policy(ABC):
 class AgePolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
-        print('Start age policy')
+        logging.info('Start age policy')
         current_date = date.current_datetime()
         date_diff = relativedelta(current_date, customer.birthdate)
         if date_diff.years < 18:
@@ -36,7 +36,7 @@ class AgePolicy(Policy):
 class ScorePolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
-        print('Start score policy')
+        logging.info('Start score policy')
         url = f'{app.config["LOAN_API_URL"]}/score'
         headers = {
             'x-api-key': app.config["LOAN_API_TOKEN"]
@@ -59,7 +59,7 @@ class ScorePolicy(Policy):
 class IncomeCommitmentPolicy(Policy):
 
     def execute(self, customer: Customer) -> bool:
-        print('Start commitment policy')
+        logging.info('Start commitment policy')
         url = f'{app.config["LOAN_API_URL"]}/commitment'
         headers = {
             'x-api-key': app.config["LOAN_API_TOKEN"]
@@ -68,10 +68,11 @@ class IncomeCommitmentPolicy(Policy):
         response = post(url, data=dumps(data), headers=headers)
         if response.status_code == 200:
             data = response.json()
+            logging.info(data)
             customer.loan_request.commitment = data['commitment']
             return self.check_given_loan(customer)
         logging.critical(response.text)
-        return Exception('Invalid response from score API')
+        return Exception('Invalid response from commitment API')
 
     def check_given_loan(self, customer: Customer):
         term_taxes = ScoreTermTaxes().get_by_score(

@@ -1,3 +1,4 @@
+import logging
 from app import db
 from app import celery
 from entities import Customer
@@ -10,30 +11,31 @@ from services.policies import IncomeCommitmentPolicy
 
 @celery.task()
 def async_process_loan_registry(_id: str) -> bool:
-    print('Start async process')
-    print(f'ID: {_id}')
+    logging.info('Start async process')
+    logging.info(f'ID: {_id}')
     try:
         session = db.session
         loan_registry = LoanRequestModel().fetch(
             session, _id
         )
         if not loan_registry:
-            print('Not found loan registry')
+            logging.info('Not found loan registry')
             return False
-        print('Rigistry found')
+        logging.info('Rigistry found')
         customer = process_loan_policies(loan_registry)
         update_loan_registry(loan_registry, customer)
+        logging.info(customer.loan_request)
         session.commit()
         return True
     except Exception as e:
-        print(f'Error: {e.args}')
+        logging.info(f'Error: {e.args}')
         raise e
     finally:
         session.close()
 
 
 def process_loan_policies(loan_registry: LoanRequestModel) -> Customer:
-    print('start processing policies')
+    logging.info('start processing policies')
     customer = Customer(
         loan_registry.cpf,
         loan_registry.name,
@@ -54,11 +56,8 @@ def process_loan_policies(loan_registry: LoanRequestModel) -> Customer:
     return customer
 
 
-def update_loan_registry(
-    loan_registry: LoanRequestModel,
-    customer: Customer
-):
-    print('Start updated registry')
+def update_loan_registry(loan_registry: LoanRequestModel, customer: Customer):
+    logging.info('Start updated registry')
     if customer.loan_request.result == 'approved':
         loan_registry.result = 'approved'
         loan_registry.approved_amount = customer.loan_request.amount

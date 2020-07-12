@@ -1,9 +1,9 @@
-
 *.pyc
 
 env/
 venv/
 
+developement_migrations/
 
 .vscode/
 .idea/

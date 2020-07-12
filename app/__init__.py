@@ -28,6 +28,8 @@ def setup_app() -> object:
         _app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
     elif getenv('FLASK_ENV') in ['development']:
         _app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+        _app.config['CELERY_BROKER_URL'] = 'amqp://rabbitmq:rabbitmq@0.0.0.0:5672/'
+        _app.config['CELERY_RESULT_BACKEND'] = 'amqp://rabbitmq:rabbitmq@0.0.0.0:5672/'
 
     return _app
 

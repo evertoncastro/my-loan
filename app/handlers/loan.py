@@ -7,7 +7,6 @@ from util import validation
 from datetime import datetime
 from models import LoanRequestModel
 from services.process_loan import async_process_loan_registry
-import inspect, os
 
 
 class CreateLoanRequest:
@@ -28,10 +27,7 @@ class CreateLoanRequest:
         session.commit()
         app.logger.debug('Posting task')
         if getenv('FLASK_ENV') not in ['testing']:
-            app.logger.debug(f'Path: {inspect.getfile(inspect.currentframe())}')
-            app.logger.debug(f'Dir: {os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))}')
             async_process_loan_registry.delay(_id)
-            #async_process_loan_registry.apply_async(args=(_id), countdown=3)
         return dict(id=_id)
 
     def validate(self, data):

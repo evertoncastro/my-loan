@@ -30,7 +30,7 @@ services:
             MYSQL_ROOT_PASSWORD: admin
         volumes:
             - ./database/db_scripts:/docker-entrypoint-initdb.d/
-            - /tmp/loan_db:/var/lib/mysql
+            - ./database/loan_db:/var/lib/mysql
     rabbit:
         image: rabbitmq:management
         hostname: rabbit

@@ -16,7 +16,7 @@ class LoanRequest:
         self._refused_policy = None
 
     def __repr__(self):
-        return f'Amount {self._amount}\n' \
+        return f'\nAmount {self._amount}\n' \
             f'Term {self._term}\n' \
             f'Income {self._income}\n' \
             f'Given Term {self._given_term}\n' \

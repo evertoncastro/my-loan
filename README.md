@@ -4,8 +4,16 @@ Todos os comandos abaixo devem ser executados no diretório raiz do projeto.
 
 ---
 ## Usando Docker
+
+Com essa estrutura os serviços abaixo ficaram disponíveis:
+- Flask Web server
+- MySQL database
+- Broker de mensagens (RabbitMQ)
+- Celery (worker)
+
+
 ```
-docker-compose up
+docker-compose up --build
 ```
 - Acesse a documentação da API em: http://0.0.0.0:8080/loan_api/v1.0/
 - Acesse o painel do broker de mensagens em: http://localhost:15672/
@@ -13,6 +21,8 @@ docker-compose up
 ----
 
 ## Na máquina local
+
+Esse fluxo deve ser utilizado para desenvolvimento e testes
 
 #### Preparando ambiente virtual
 ```
