@@ -16,16 +16,16 @@ class LoanRequest:
         self._refused_policy = None
 
     def __repr__(self):
-        return f'\nAmount {self._amount}\n' \
-            f'Term {self._term}\n' \
-            f'Income {self._income}\n' \
-            f'Given Term {self._given_term}\n' \
-            f'Score {self._score}\n' \
-            f'Comitment {self._commitment}\n' \
-            f'Given Amount {self._given_amount}\n' \
-            f'Given Term Value {self._given_term_value}\n' \
-            f'Result {self._result}\n' \
-            f'Refused Policy {self._refused_policy}\n' \
+        return f'\nAmount: {self._amount}\n' \
+            f'Terms requested: {self._term}\n' \
+            f'Income requested: {self._income}\n' \
+            f'Score found: {self._score}\n' \
+            f'Commitment found: {self._commitment}\n' \
+            f'Given Amount: {self._given_amount}\n' \
+            f'Given Terms: {self._given_term}\n' \
+            f'Given Term Value: {self._given_term_value}\n' \
+            f'Result: {self._result}\n' \
+            f'Refused Policy: {self._refused_policy}\n' \
 
     @property
     def amount(self):

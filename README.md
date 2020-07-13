@@ -32,7 +32,7 @@ docker-compose up --build
 ```
 
 - Acesse a documentação da API em: http://0.0.0.0:8080/loan_api/v1.0/
-- É possível ver os logs das tarefas assíncronas no terminal
+- É possível ver os logs das tarefas assíncronas no terminal (Tarefas com 3 segundos de delay)
 - Acesse o painel do broker de mensagens em: http://0.0.0.0:15672/
 
 ----
@@ -88,4 +88,4 @@ celery -A app.celery worker --loglevel=info
 
 ### Importante
 
-- As tarefas estão sendo executadas com um delay de 7 segundos para facilitar a visualização nos testes
+- As tarefas estão sendo executadas com um delay de 5 segundos para facilitar a visualização nos testes
