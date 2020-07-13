@@ -88,4 +88,6 @@ celery -A app.celery worker --loglevel=info
 
 ### Importante
 
-- As tarefas estão sendo executadas com um delay de 5 segundos para facilitar a visualização nos testes
+As tarefas estão sendo executadas com um delay de 5 segundos para facilitar a visualização nos testes:
+
+![Logs](https://firebasestorage.googleapis.com/v0/b/claveapplication.appspot.com/o/task_logs.png?alt=media&token=dcdaaea5-a166-41a0-a1ce-66661d7418f2)
